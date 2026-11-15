@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,25 +16,14 @@ import {
 } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-export const metadata: Metadata = {
-  title: "مقاول عزل مائي في دبي | ISFS Technical Services LLC",
-  description:
-    "شركة ISFS Technical Services LLC تقدم خدمات العزل المائي في دبي والإمارات، عزل PU، الأغشية، عزل الأسطح، المناطق الرطبة، الطلاءات الواقية، والصيانة الفنية.",
-  alternates: {
-    canonical: "https://isfs-website.vercel.app/ar",
-    languages: {
-      en: "https://isfs-website.vercel.app",
-      ar: "https://isfs-website.vercel.app/ar",
-    },
-  },
-  openGraph: {
-    title: "مقاول عزل مائي في دبي | ISFS Technical Services LLC",
-    description:
-      "خدمات العزل المائي والأسطح والأغشية وPU والمناطق الرطبة والطلاءات الواقية في دبي والإمارات.",
-    locale: "ar_AE",
-    images: [{ url: "/logo.jpg", width: 1200, height: 630, alt: "شعار ISFS Technical Services LLC" }],
-  },
-};
+export const metadata = pageMetadata({
+  title: "مقاول عزل مائي في دبي والإمارات",
+  description: "تقدم ISFS Technical Services LLC خدمات العزل المائي للأسطح والبولي يوريثان والأغشية وأرضيات الإيبوكسي في دبي والإمارات. تواصل معنا لطلب عرض سعر ومعاينة الموقع.",
+  path: "/ar",
+  arabic: true,
+  translatedHome: true,
+  imageAlt: "شعار شركة ISFS للخدمات الفنية",
+});
 
 const services = [
   {
@@ -196,12 +185,12 @@ const sectionLinks = [
 
 export default function ArabicPage() {
   return (
-    <main dir="rtl" className="min-h-screen scroll-smooth overflow-x-hidden bg-[#060f1e] font-sans text-white">
+    <main lang="ar" dir="rtl" className="min-h-screen scroll-smooth overflow-x-hidden bg-[#060f1e] font-sans text-white">
 
       {/* ── NAVBAR ── */}
       <header className="site-header sticky top-0 z-50 flex h-[70px] items-center justify-between border-b border-white/[0.08] bg-[#060f1e]/90 px-[5%] backdrop-blur-xl">
         <div className="flex items-center gap-3">
-          <Image src="/logo.jpg" alt="ISFS Logo" width={80} height={40} className="h-10 w-auto rounded-xl" />
+          <Image src="/logo.jpg" alt="ISFS Technical Services LLC logo" width={80} height={40} className="h-10 w-auto rounded-xl" />
           <div>
             <p className="text-[15px] font-black leading-none tracking-wide">ISFS</p>
             <p className="mt-0.5 text-[10px] tracking-wide text-slate-400">Technical Services LLC</p>
@@ -302,7 +291,7 @@ export default function ArabicPage() {
 
           <Reveal className="relative" delay={0.05} scale>
             <div className="overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.04]">
-              <Image src="/projects-collage.png" alt="مشاريع ISFS" width={1536} height={1024} className="block w-full" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Image src="/projects-collage.png" alt="صور أعمال العزل المائي لشركة ISFS" loading="eager" fetchPriority="high" width={1536} height={1024} className="block w-full" sizes="(max-width: 1024px) 90vw, 45vw" />
             </div>
           </Reveal>
         </div>
@@ -380,7 +369,7 @@ export default function ArabicPage() {
           </Reveal>
 
           <Reveal className="overflow-hidden rounded-[30px] border border-slate-200 shadow-2xl" delay={0.05} scale>
-            <Image src="/about-us.png" alt="فريق ISFS في الموقع" width={1080} height={1456} className="w-full object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+            <Image src="/about-us.png" alt="نبذة عن شركة ISFS للخدمات الفنية" width={1080} height={1456} className="w-full object-cover" sizes="(max-width: 1024px) 90vw, 45vw" />
           </Reveal>
         </div>
       </section>
@@ -530,7 +519,7 @@ export default function ArabicPage() {
               >
                 <Image
                   src={`/certificate${num}.jpeg`}
-                  alt={`شهادة ISFS ${num}`}
+                  alt={`شهادة اعتماد تطبيق أنظمة العزل لشركة ISFS رقم ${num}`}
                   width={881}
                   height={842}
                   className="h-[220px] w-full object-contain p-4"

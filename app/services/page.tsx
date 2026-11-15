@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import {
   Building2,
@@ -12,21 +12,15 @@ import {
   Zap,
 } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Waterproofing Services in Dubai and UAE",
-  description:
-    "Explore ISFS Technical Services LLC waterproofing services in Dubai and the UAE, including PU waterproofing, membrane waterproofing, wet area protection, roof insulation, epoxy flooring, GRP lamination, crack injection, and building maintenance.",
-  alternates: {
-    canonical: "https://isfs-website.vercel.app/services",
-  },
-  openGraph: {
-    title: "Waterproofing Services in Dubai and UAE",
-    description:
-      "PU waterproofing, membrane systems, roof waterproofing, epoxy flooring, GRP lamination, crack injection, protective coatings, and technical maintenance across the UAE.",
-    url: "https://isfs-website.vercel.app/services",
-    images: [{ url: "/projects-collage.png", width: 1536, height: 1024, alt: "ISFS waterproofing projects in the UAE" }],
-  },
-};
+export const metadata = pageMetadata({
+  title: "Waterproofing & Epoxy Flooring Services in Dubai",
+  description: "Explore ISFS waterproofing services in Dubai and the UAE: PU and membrane systems, roof insulation, epoxy flooring, GRP lamination, crack injection and maintenance.",
+  path: "/services",
+  image: "/projects-collage.png",
+  imageAlt: "ISFS waterproofing project photographs",
+  imageWidth: 1536,
+  imageHeight: 1024,
+});
 
 const whatsAppQuoteUrl =
   "https://wa.me/971506752786?text=Hello%20ISFS%2C%20I%20need%20a%20quotation%20for%20waterproofing%20works.";

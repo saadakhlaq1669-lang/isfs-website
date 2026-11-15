@@ -1,22 +1,12 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Contact ISFS Waterproofing Contractor Dubai",
-  description:
-    "Contact ISFS Technical Services LLC for waterproofing quotations, free site inspections, phone support, WhatsApp inquiries, email, and UAE service locations.",
-  alternates: {
-    canonical: "https://isfs-website.vercel.app/contact",
-  },
-  openGraph: {
-    title: "Contact ISFS Technical Services LLC",
-    description:
-      "Request a waterproofing quotation or free site inspection in Dubai and across the UAE.",
-    url: "https://isfs-website.vercel.app/contact",
-    images: [{ url: "/logo.jpg", width: 1200, height: 630, alt: "ISFS Technical Services LLC" }],
-  },
-};
+export const metadata = pageMetadata({
+  title: "Contact ISFS | Waterproofing Quotes in Dubai",
+  description: "Contact ISFS Technical Services LLC for a waterproofing quote or free site inspection in Dubai and the UAE. Call +971 50 675 2786 or send a WhatsApp inquiry.",
+  path: "/contact",
+});
 
 const whatsAppQuoteUrl =
   "https://wa.me/971506752786?text=Hello%20ISFS%2C%20I%20need%20a%20quotation%20for%20waterproofing%20works.";

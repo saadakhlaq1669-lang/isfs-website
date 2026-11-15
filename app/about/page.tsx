@@ -1,22 +1,17 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { Building2, CheckCircle2, MapPin, ShieldCheck } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "About ISFS",
-  description:
-    "Learn about ISFS Technical Services LLC, founded in Ajman in 2005 and rebranded in Dubai in 2023, with UAE waterproofing experience, certifications, and project sectors.",
-  alternates: {
-    canonical: "https://isfs-website.vercel.app/about",
-  },
-  openGraph: {
-    title: "About ISFS Technical Services LLC",
-    description:
-      "Dubai waterproofing contractor with history from 2005 Ajman to 2023 Dubai rebrand, certified applicator experience, and UAE project sectors.",
-    images: [{ url: "/about-us.png", width: 1080, height: 1456, alt: "ISFS Technical Services team on site" }],
-  },
-};
+export const metadata = pageMetadata({
+  title: "About ISFS | Dubai Waterproofing Specialists",
+  description: "Discover ISFS Technical Services LLC's waterproofing experience, applicator certifications and work across residential, commercial and industrial projects in the UAE.",
+  path: "/about",
+  image: "/about-us.png",
+  imageAlt: "ISFS Technical Services LLC company profile",
+  imageWidth: 1080,
+  imageHeight: 1456,
+});
 
 const whatsAppQuoteUrl =
   "https://wa.me/971506752786?text=Hello%20ISFS%2C%20I%20need%20a%20quotation%20for%20waterproofing%20works.";
@@ -42,7 +37,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-[#060f1e] text-white">
       <header className="site-header sticky top-0 z-50 flex h-[70px] items-center justify-between border-b border-white/[0.08] bg-[#060f1e]/90 px-[5%] backdrop-blur-xl">
         <Link href="/" transitionTypes={["nav-back"]} className="animated-link flex items-center gap-3">
-          <Image src="/logo.jpg" alt="ISFS Logo" width={80} height={40} className="h-10 w-auto rounded-xl" />
+          <Image src="/logo.jpg" alt="ISFS Technical Services LLC logo" width={80} height={40} className="h-10 w-auto rounded-xl" />
           <div>
             <p className="text-[15px] font-black leading-none tracking-wide">ISFS</p>
             <p className="mt-0.5 text-[10px] tracking-wide text-slate-400">Technical Services LLC</p>
@@ -80,7 +75,7 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="overflow-hidden rounded-[28px] border border-white/[0.08] bg-white/[0.04]">
-            <Image src="/about-us.png" alt="ISFS waterproofing team on site" width={1080} height={1456} className="w-full object-cover" priority />
+            <Image src="/about-us.png" alt="ISFS Technical Services LLC company profile" width={1080} height={1456} className="w-full object-cover" sizes="(max-width: 1024px) 90vw, 45vw" preload />
           </div>
         </div>
       </section>
