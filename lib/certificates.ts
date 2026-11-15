@@ -1,0 +1,9 @@
+// Transcribed from the preserved scans; dates do not establish current issuer status.
+export const certificates = [
+  { id: 1, issuer: "Royal Industries", title: "NEO Membrane Waterproofing", ar: "العزل المائي بأغشية NEO", type: "Approved Applicator Certificate", typeAr: "شهادة مطبق معتمد", dates: "16 Nov 2025 – 16 Nov 2026", datesAr: "16 نوفمبر 2025 – 16 نوفمبر 2026", width: 881, height: 842 },
+  { id: 2, issuer: "Sheridan Specialized Products", title: "Wet Area Waterproofing", ar: "عزل المناطق الرطبة", type: "Approved Applicator Certificate", typeAr: "شهادة مطبق معتمد", dates: "02 Oct 2024 – 02 Oct 2025", datesAr: "2 أكتوبر 2024 – 2 أكتوبر 2025", width: 1323, height: 934 },
+  { id: 3, issuer: "Royal Industries", title: "Crack Injection System", ar: "نظام حقن الشقوق", type: "Approved Applicator Certificate", typeAr: "شهادة مطبق معتمد", dates: "16 Nov 2025 – 16 Nov 2026", datesAr: "16 نوفمبر 2025 – 16 نوفمبر 2026", width: 876, height: 819 },
+  { id: 4, issuer: "LEMS", title: "ISO 9001:2015 — Quality Management System", ar: "ISO 9001:2015 — نظام إدارة الجودة", type: "Certificate of Registration", typeAr: "شهادة تسجيل", dates: "Printed expiry: 02 Jun 2025", datesAr: "تاريخ الانتهاء المطبوع: 2 يونيو 2025", width: 905, height: 1263 },
+  { id: 5, issuer: "Henkel Polybit", title: "Polyflex + Bituplus — Torch-Applied Membranes", ar: "Polyflex + Bituplus — الأغشية المطبقة بالشعلة", type: "Training Certification", typeAr: "شهادة تدريب", dates: "Issued 02 May 2023 · no expiry stated", datesAr: "صدرت في 2 مايو 2023 · لا يظهر تاريخ انتهاء", width: 895, height: 1256 },
+  { id: 6, issuer: "SOPREMA", title: "Conventional Torch-Applied Waterproofing System", ar: "نظام العزل المائي التقليدي المطبق بالشعلة", type: "Certificate of Approved Applicator", typeAr: "شهادة مطبق معتمد", dates: "Issued 01 Jan 2026 · one-year term stated", datesAr: "صدرت في 1 يناير 2026 · المدة المذكورة سنة واحدة", width: 1257, height: 1179 },
+];

@@ -1,5 +1,6 @@
+import QuoteForm from "@/components/QuoteForm";
+import SiteHeader from "@/components/SiteHeader";
 import { pageMetadata } from "@/lib/seo";
-import Link from "next/link";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
 export const metadata = pageMetadata({
@@ -41,24 +42,13 @@ const contactMethods = [
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#060f1e] text-white">
-      <header className="site-header sticky top-0 z-50 flex h-[70px] items-center justify-between border-b border-white/[0.08] bg-[#060f1e]/90 px-[5%] backdrop-blur-xl">
-        <Link href="/" transitionTypes={["nav-back"]} className="animated-link text-[15px] font-black tracking-wide">
-          ISFS <span className="text-slate-400">Technical Services LLC</span>
-        </Link>
-        <nav className="flex items-center gap-4 text-[13px] font-semibold text-slate-300">
-          <Link href="/about" transitionTypes={["nav-back"]} className="animated-link hidden hover:text-cyan-400 sm:inline">About</Link>
-          <Link href="/services" transitionTypes={["nav-back"]} className="animated-link hidden hover:text-cyan-400 sm:inline">Services</Link>
-          <Link href="/ar" transitionTypes={["nav-forward"]} className="animated-pill rounded-full border border-white/15 px-4 py-2 font-bold text-slate-300 hover:border-cyan-400 hover:text-cyan-400">
-            عربي
-          </Link>
-        </nav>
-      </header>
+      <SiteHeader />
 
-      <section className="px-[5%] py-24">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <section className="px-[5%] py-12 md:py-20">
+        <div className="mx-auto grid max-w-7xl gap-6 lg:gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-cyan-400">Contact ISFS</p>
-            <h1 className="mt-5 text-5xl font-black leading-tight md:text-7xl">
+            <h1 className="mt-5 text-4xl font-black leading-tight md:text-7xl">
               Request a Waterproofing Quote
             </h1>
             <p className="mt-6 max-w-2xl text-[17px] leading-8 text-slate-400">
@@ -102,7 +92,9 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="bg-white px-[5%] py-24 text-slate-900">
+      <section id="quote" className="scroll-mt-24 px-[5%] pb-12"><div className="mx-auto max-w-3xl"><h2 className="sr-only">Quotation details</h2><QuoteForm /></div></section>
+
+      <section className="bg-white px-[5%] py-12 md:py-20 text-slate-900">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <div>
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50">

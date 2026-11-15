@@ -1,10 +1,17 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import SiteHeader from "@/components/SiteHeader";
+import ExpandableGrid from "@/components/ExpandableGrid";
+import ProjectPortfolio from "@/components/ProjectPortfolio";
+import Certificates from "@/components/Certificates";
+import QuoteForm from "@/components/QuoteForm";
+import PortfolioStats from "@/components/PortfolioStats";
+
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import type { FormEvent, PointerEvent } from "react";
-import { useEffect, useRef, useState } from "react";
+import type { PointerEvent } from "react";
 import {
   Phone,
   ShieldCheck,
@@ -18,37 +25,7 @@ import {
   Clock,
   Trophy,
   MapPin,
-  Menu,
-  X,
 } from "lucide-react";
-
-function useCounter(target: number, duration = 2000) {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (!inView) return;
-    let startTime: number | null = null;
-    let rafId: number;
-
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      setCount(Math.floor(progress * target));
-      if (progress < 1) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        setCount(target);
-      }
-    };
-
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
-  }, [inView, target, duration]);
-
-  return { count, ref };
-}
 
 const services = [
   {
@@ -170,8 +147,8 @@ const services = [
 const whyUs = [
   {
     icon: ShieldCheck,
-    title: "Approved applicator",
-    desc: "Manufacturer-approved applicator credentials and documented training for waterproofing and protection systems.",
+    title: "Manufacturer documentation",
+    desc: "Published applicator and training records for waterproofing and protection systems; request current documentation for your project.",
   },
   {
     icon: Building2,
@@ -190,29 +167,10 @@ const whyUs = [
   },
 ];
 
-const deliveredProjects = [
-  { name: "Twin Tower – Deira Islands", service: "Membrane Waterproofing", location: "Dubai" },
-  { name: "Prestige One Apartments – Deira Islands", service: "Membrane Waterproofing", location: "Dubai" },
-  { name: "Jumeirah Garden City – Al Satwa", service: "Membrane Waterproofing", location: "Dubai" },
-  { name: "Majid Al Futtaim – Deira City Centre", service: "Waterproofing Works", location: "Dubai" },
-  { name: "CGGC China Energy", service: "Chemical & Cable Trench Waterproofing", location: "Umm Al Quwain" },
-  { name: "Dubai Airport CMT Roof", service: "Roof Waterproofing", location: "Dubai" },
-  { name: "Strong Wall Construction", service: "Combo Roofing & Wet Area Waterproofing", location: "Dubai" },
-  { name: "Hillite Building Contracting", service: "Membrane Waterproofing & Crack Treatment", location: "Dubai" },
-  { name: "Al Fareej Al Sharqi", service: "GRP Lamination for Water Tanks", location: "UAE" },
-  { name: "Dubai Deira Islands", service: "Advanced Membrane Waterproofing Systems", location: "Dubai" },
-];
 
 const whatsAppQuoteMessage = "Hello ISFS, I need a quotation for waterproofing works.";
 const whatsAppQuoteUrl = `https://wa.me/971506752786?text=${encodeURIComponent(whatsAppQuoteMessage)}`;
 
-const navLinks = [
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Certifications", href: "#certifications" },
-  { label: "Contact", href: "/contact" },
-];
 
 const sectionLinks = [
   { label: "About", href: "#about", count: "01" },
@@ -231,173 +189,15 @@ function setPressPoint(event: PointerEvent<HTMLElement>) {
   event.currentTarget.style.setProperty("--press-y", `${y}%`);
 }
 
-function StatItem({ num, label, index }: { num: string; label: string; index: number }) {
-  const isNumeric = /\d+/.test(num);
-  const numericValue = isNumeric ? parseInt(num.replace(/\D/g, "")) : 0;
-  const suffix = num.replace(/\d+/g, "");
-  const { count, ref } = useCounter(numericValue);
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: Math.min(index * 0.03, 0.09) }}
-      viewport={{ once: true, amount: 0.12 }}
-      className="text-center"
-    >
-      <p className="text-4xl font-black text-cyan-400">
-        {isNumeric ? `${count}${suffix}` : num}
-      </p>
-      <p className="mt-1 text-[12px] tracking-wide text-slate-400">{label}</p>
-    </motion.div>
-  );
-}
-
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const handleInquirySubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    const data = new FormData(form);
-    const name = String(data.get("name") || "");
-    const phone = String(data.get("phone") || "");
-    const email = String(data.get("email") || "");
-    const service = String(data.get("service") || "");
-    const message = String(data.get("message") || "");
-    const body = [
-      whatsAppQuoteMessage,
-      "",
-      "New ISFS website inquiry",
-      `Name: ${name}`,
-      `Phone: ${phone}`,
-      `Email: ${email}`,
-      `Service required: ${service}`,
-      `Message: ${message}`,
-    ].join("\n");
-    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
-
-    if (submitter?.value === "email") {
-      window.location.href = `mailto:info@isfstechnicalservices.com?subject=${encodeURIComponent("Website inquiry")}&body=${encodeURIComponent(body)}`;
-      return;
-    }
-
-    window.open(`https://wa.me/971506752786?text=${encodeURIComponent(body)}`, "_blank", "noopener,noreferrer");
-    form.reset();
-  };
-
   return (
     <main className="min-h-screen scroll-smooth overflow-x-hidden bg-[#060f1e] font-sans text-white">
 
       {/* ── NAVBAR ── */}
-      <header className="site-header sticky top-0 z-50 flex h-[70px] items-center justify-between border-b border-white/[0.08] bg-[#060f1e]/90 px-[5%] backdrop-blur-xl">
-        <div className="flex items-center gap-3">
-          <Image src="/logo.jpg" alt="ISFS Technical Services LLC logo" width={80} height={40} className="h-10 w-auto rounded-xl" />
-          <div>
-            <p className="text-[15px] font-black leading-none tracking-wide">ISFS</p>
-            <p className="mt-0.5 text-[10px] tracking-wide text-slate-400">Technical Services LLC</p>
-          </div>
-        </div>
-
-        {/* Desktop nav */}
-        <nav className="hidden gap-8 md:flex">
-          {navLinks.map((item) =>
-            item.href.startsWith("#") ? (
-              <a
-                key={item.label}
-                href={item.href}
-                className="animated-link text-[13px] font-medium text-slate-400 hover:text-cyan-400"
-              >
-                {item.label}
-              </a>
-            ) : (
-              <Link
-                key={item.label}
-                href={item.href}
-                transitionTypes={["nav-forward"]}
-                className="animated-link text-[13px] font-medium text-slate-400 hover:text-cyan-400"
-              >
-                {item.label}
-              </Link>
-            ),
-          )}
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href="/ar"
-            transitionTypes={["nav-forward"]}
-            onPointerDown={setPressPoint}
-            className="animated-pill hidden rounded-full border border-white/15 px-4 py-2 text-[13px] font-bold text-slate-300 hover:border-cyan-400 hover:text-cyan-400 md:inline-flex"
-          >
-            عربي
-          </Link>
-
-          <a
-            href="tel:+971506752786"
-            onPointerDown={setPressPoint}
-            className="animated-pill flex items-center gap-2 rounded-full bg-cyan-400 px-5 py-2.5 text-[13px] font-bold text-[#060f1e] hover:opacity-85"
-          >
-            <Phone className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Call Us</span>
-          </a>
-
-          <button
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10 md:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed inset-x-0 top-[70px] z-40 border-b border-white/[0.08] bg-[#060f1e]/95 px-[5%] py-6 backdrop-blur-xl md:hidden"
-        >
-          <nav className="flex flex-col gap-5">
-            {navLinks.map((item) => (
-              item.href.startsWith("#") ? (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="animated-link text-[16px] font-semibold text-slate-300 hover:text-cyan-400"
-                >
-                  {item.label}
-                </a>
-              ) : (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  transitionTypes={["nav-forward"]}
-                  onClick={() => setMenuOpen(false)}
-                  className="animated-link text-[16px] font-semibold text-slate-300 hover:text-cyan-400"
-                >
-                  {item.label}
-                </Link>
-              )
-            ))}
-            <Link
-              href="/ar"
-              transitionTypes={["nav-forward"]}
-              onClick={() => setMenuOpen(false)}
-              onPointerDown={setPressPoint}
-              className="animated-pill rounded-2xl border border-white/15 px-4 py-3 text-center text-[15px] font-bold text-slate-300 hover:border-cyan-400 hover:text-cyan-400"
-            >
-              عربي
-            </Link>
-          </nav>
-        </motion.div>
-      )}
+      <SiteHeader />
 
       {/* ── HERO ── */}
-      <section className="relative flex min-h-[92vh] items-center overflow-hidden px-[5%] py-20">
+      <section className="relative flex min-h-[calc(100svh-70px)] items-center overflow-hidden px-[5%] py-12 md:py-20">
         <div
           className="absolute inset-0"
           style={{
@@ -417,7 +217,7 @@ export default function Home() {
           >
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-1.5 text-[12px] font-semibold text-cyan-300">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400" />
-              Engineering Protection Since 2005
+              Company-provided history · 2005
             </div>
 
             <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-6xl">
@@ -476,8 +276,8 @@ export default function Home() {
                 <Trophy className="h-5 w-5 text-cyan-400" />
               </div>
               <div>
-                <p className="text-[17px] font-black leading-none text-cyan-400">20+ Years</p>
-                <p className="mt-1 text-[11px] text-slate-400">Industry Experience</p>
+                <p className="text-[17px] font-black leading-none text-cyan-400">UAE</p>
+                <p className="mt-1 text-[11px] text-slate-400">Company portfolio</p>
               </div>
             </div>
           </motion.div>
@@ -485,25 +285,14 @@ export default function Home() {
       </section>
 
       {/* ── STATS ── */}
-      <section className="border-y border-white/[0.08] bg-[#0a1929] px-[5%] py-10">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4">
-          {[
-            { num: "20+", label: "Years of Experience" },
-            { num: "500+", label: "Projects Completed" },
-            { num: "18+", label: "Core Services" },
-            { num: "UAE", label: "Wide Coverage" },
-          ].map((s, i) => (
-            <StatItem key={s.label} num={s.num} label={s.label} index={i} />
-          ))}
-        </div>
-      </section>
+      <section className="border-y border-white/10 bg-[#0a1929] px-[5%] py-6"><div className="mx-auto max-w-7xl"><PortfolioStats /></div></section>
 
       <section className="border-b border-white/[0.08] bg-[#071521] px-[5%] py-5">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <p className="text-[11px] font-bold uppercase tracking-[2px] text-slate-400">
             Explore Sections
           </p>
-          <nav className="grid gap-2 sm:grid-cols-2 md:flex md:flex-wrap">
+          <nav className="flex flex-wrap gap-2">
             {sectionLinks.map((item) => (
               <a
                 key={item.href}
@@ -520,8 +309,8 @@ export default function Home() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section id="about" className="scroll-mt-[90px] border-b border-slate-200 bg-white px-[5%] py-24">
-        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2">
+      <section id="about" className="scroll-mt-[90px] border-b border-slate-200 bg-white px-[5%] py-12 md:py-20">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 lg:gap-12 lg:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -532,7 +321,7 @@ export default function Home() {
               <span>01</span>
               Who We Are
             </p>
-            <h2 className="text-4xl font-black leading-tight text-slate-900 md:text-5xl">
+            <h2 className="text-3xl font-black leading-tight text-slate-900 md:text-5xl">
               A Dubai Team Built<br />on UAE Site Experience
             </h2>
             <p className="mt-6 text-[16px] leading-[1.85] text-slate-600">
@@ -540,16 +329,7 @@ export default function Home() {
               coatings, and technical maintenance works across residential,
               commercial, and industrial projects in Dubai and the UAE.
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 px-5 py-4">
-                <p className="text-3xl font-black text-cyan-700">20+</p>
-                <p className="text-[12px] font-medium text-slate-500">Years Experience</p>
-              </div>
-              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 px-5 py-4">
-                <p className="text-3xl font-black text-cyan-700">500+</p>
-                <p className="text-[12px] font-medium text-slate-500">Completed Projects</p>
-              </div>
-            </div>
+
             <Link
               href="/about"
               transitionTypes={["nav-forward"]}
@@ -567,26 +347,26 @@ export default function Home() {
             viewport={{ once: true, amount: 0.12 }}
             className="overflow-hidden rounded-[30px] border border-slate-200 shadow-2xl"
           >
-            <Image src="/about-us.png" alt="ISFS Technical Services LLC company profile" width={1080} height={1456} className="w-full object-cover" sizes="(max-width: 1024px) 90vw, 45vw" />
+            <Image src="/about-us.png" alt="ISFS Technical Services LLC company profile" width={1080} height={1456} className="max-h-[420px] w-full object-contain" sizes="(max-width: 1024px) 90vw, 45vw" />
           </motion.div>
         </div>
       </section>
 
       {/* ── SERVICES ── */}
-      <section id="services" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-24">
+      <section id="services" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-12 md:py-20">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-700">
             <span>02</span>
             What We Do
           </p>
-          <h2 className="text-4xl font-black leading-tight text-slate-900 md:text-5xl">
+          <h2 className="text-3xl font-black leading-tight text-slate-900 md:text-5xl">
             Waterproofing &<br />Protection Services
           </h2>
           <p className="mt-5 max-w-lg text-[16px] leading-[1.75] text-slate-500">
-            Industry-leading systems for every substrate and condition, using approved materials from trusted manufacturers.
+            Systems for roofs, floors and wet areas. Discuss the right approach after a review of your site conditions.
           </p>
 
-          <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <ExpandableGrid label={`View all ${services.length} services`} className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {services.map((svc, i) => {
               const Icon = svc.icon;
               return (
@@ -596,7 +376,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: (i % 3) * 0.02 }}
                   viewport={{ once: true, amount: 0.08 }}
-                  className="rounded-3xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300 hover:shadow-2xl hover:shadow-cyan-200/40"
+                  className="rounded-3xl border border-slate-200 bg-white p-5 md:p-8 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300 hover:shadow-2xl hover:shadow-cyan-200/40"
                 >
                   <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50">
                     <Icon className="h-6 w-6 text-cyan-700" />
@@ -609,21 +389,21 @@ export default function Home() {
                 </motion.div>
               );
             })}
-          </div>
+          </ExpandableGrid>
         </div>
       </section>
 
       {/* ── WHY US ── */}
-      <section className="border-b border-white/[0.08] bg-[#060f1e] px-[5%] py-24">
+      <section className="border-b border-white/[0.08] bg-[#060f1e] px-[5%] py-12 md:py-20">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-300">
             <span>QA</span>
             Trust & QA
           </p>
-          <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">
-            Approved Systems,<br />Checked on Site
+          <h2 className="text-3xl font-black leading-tight text-white md:text-5xl">
+            System Documentation,<br />Site Coordination
           </h2>
-          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 md:mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {whyUs.map((item, i) => {
               const Icon = item.icon;
               return (
@@ -633,7 +413,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: (i % 4) * 0.02 }}
                   viewport={{ once: true, amount: 0.12 }}
-                  className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-9"
+                  className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6"
                 >
                   <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10">
                     <Icon className="h-6 w-6 text-cyan-400" />
@@ -648,103 +428,33 @@ export default function Home() {
       </section>
 
       {/* ── PROJECTS ── */}
-      <section id="projects" className="scroll-mt-[90px] border-b border-white/[0.08] bg-[#0a1929] px-[5%] py-24">
+      <section id="projects" className="scroll-mt-[90px] border-b border-white/[0.08] bg-[#0a1929] px-[5%] py-12 md:py-20">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-300">
             <span>03</span>
             Our Work
           </p>
-          <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">
-            20+ Years of Projects<br />Across the UAE
-          </h2>
-          <p className="mt-5 max-w-3xl text-[16px] leading-[1.8] text-slate-400">
-            ISFS has delivered waterproofing, roofing, membrane, GRP lamination, wet area protection,
-            and insulation works for villas, towers, malls, swimming pools, water tanks,
-            and commercial developments across the UAE.
-          </p>
-
-          <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {[
-              ["100+", "Delivered Works"],
-              ["20+", "Years Experience"],
-              ["UAE", "Project Coverage"],
-              ["18+", "Core Services"],
-            ].map((item) => (
-              <div key={item[1]} className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6 text-center">
-                <p className="text-3xl font-black text-cyan-400">{item[0]}</p>
-                <p className="mt-2 text-[12px] text-slate-400">{item[1]}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {deliveredProjects.map((project, i) => (
-              <motion.div
-                key={project.name}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-	                transition={{ duration: 0.3, delay: (i % 3) * 0.02 }}
-	                viewport={{ once: true, amount: 0.08 }}
-	                className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400/40 hover:bg-white/[0.07]"
-	              >
-	                <p className="text-[17px] font-black text-white">{project.name}</p>
-	                <p className="mt-3 text-[13px] font-semibold text-cyan-400">{project.service}</p>
-	                <p className="mt-2 flex items-center gap-1.5 text-[12px] text-slate-400">
-	                  <MapPin className="h-3 w-3" /> {project.location}
-	                </p>
-	              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-12 rounded-3xl border border-cyan-400/20 bg-cyan-400/10 p-6 text-center">
-            <p className="text-[15px] leading-7 text-slate-300">
-              Full project portfolio available upon request — including villas, residential buildings,
-              water tanks, swimming pools, service stations, labour camps, and commercial developments
-              across Dubai, Sharjah, Ajman, Ras Al Khaimah, Fujairah, and Umm Al Quwain.
-            </p>
-          </div>
+          <h2 className="text-3xl font-black leading-tight md:text-5xl">Selected work across the UAE</h2>
+          <ProjectPortfolio />
         </div>
       </section>
 
       {/* ── CERTIFICATIONS ── */}
-      <section id="certifications" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-24">
+      <section id="certifications" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-12 md:py-20">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-700">
             <span>04</span>
             Certifications
           </p>
-          <h2 className="text-4xl font-black leading-tight text-slate-900 md:text-5xl">Approved & Certified</h2>
-          <p className="mt-5 max-w-lg text-[16px] leading-[1.75] text-slate-500">
-            Manufacturer approvals, quality management documentation, and training certifications that give you full confidence.
-          </p>
-
-          <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3, 4, 5, 6].map((num) => (
-              <div
-                key={num}
-                className="overflow-hidden rounded-3xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                <Image
-                  src={`/certificate${num}.jpeg`}
-                  alt={`ISFS Technical Services LLC applicator certificate ${num}`}
-                  width={881}
-                  height={842}
-                  className="h-[220px] w-full object-contain p-4"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="border-t border-slate-100 bg-slate-50 px-4 py-3 text-center text-[12px] font-semibold text-cyan-700">
-                  Applicator Certificate {num}
-                </div>
-              </div>
-            ))}
-          </div>
+          <h2 className="text-3xl font-black leading-tight text-slate-900 md:text-5xl">Manufacturer & training records</h2>
+          <Certificates />
         </div>
       </section>
 
       {/* ── CONTACT ── */}
-<section id="contact" className="scroll-mt-[90px] bg-[#060f1e] px-[5%] py-24">
+<section id="contact" className="scroll-mt-[90px] bg-[#060f1e] px-[5%] py-12 md:py-20">
   <div className="mx-auto max-w-5xl">
-    <div className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-white/[0.04] px-8 py-16 md:px-14">
+    <div className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-white/[0.04] px-4 py-10 md:px-14">
       <div className="pointer-events-none absolute -top-24 left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
 
       <div className="relative z-10 text-center">
@@ -752,7 +462,7 @@ export default function Home() {
           <span>05</span>
           Contact
         </p>
-        <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">
+        <h2 className="text-3xl font-black leading-tight text-white md:text-5xl">
           Let&apos;s Protect
           <br />
           <span className="text-cyan-400">Your Project</span>
@@ -766,7 +476,9 @@ export default function Home() {
         </p>
 
         {/* CONTACT CARDS */}
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
+        <div id="quote" className="mt-8 scroll-mt-24"><QuoteForm serviceOptions={services.map(service => service.title)} /></div>
+
+<div className="mt-12 grid gap-5 md:grid-cols-3">
 
           <div className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6">
             <Phone className="mx-auto h-8 w-8 text-cyan-400" />
@@ -804,10 +516,7 @@ export default function Home() {
         </div>
 
         {/* EXTRA SERVICES */}
-        <div className="mt-14 rounded-3xl border border-cyan-400/10 bg-cyan-400/5 p-8">
-          <h3 className="text-2xl font-black text-white">
-            Additional Technical Services
-          </h3>
+        <details className="mt-8 rounded-3xl border border-cyan-400/10 bg-cyan-400/5 p-5"><summary className="cursor-pointer py-2 text-lg font-bold">Additional Technical Services</summary>
 
           <div className="mt-6 grid gap-3 text-left sm:grid-cols-2 lg:grid-cols-3">
             {[
@@ -829,93 +538,9 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </details>
 
-        <form
-          onSubmit={handleInquirySubmit}
-          className="mt-14 rounded-3xl border border-white/[0.08] bg-[#071521] p-6 text-left md:p-8"
-        >
-          <h3 className="text-center text-2xl font-black text-white">
-            Send an Inquiry
-          </h3>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            <label className="text-[12px] font-semibold text-slate-300">
-              Name
-              <input
-                name="name"
-                required
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] text-white outline-none transition focus:border-cyan-400"
-                placeholder="Your name"
-              />
-            </label>
-            <label className="text-[12px] font-semibold text-slate-300">
-              Phone
-              <input
-                name="phone"
-                required
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] text-white outline-none transition focus:border-cyan-400"
-                placeholder="+971..."
-                type="tel"
-              />
-            </label>
-            <label className="text-[12px] font-semibold text-slate-300">
-              Email
-              <input
-                name="email"
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] text-white outline-none transition focus:border-cyan-400"
-                placeholder="name@example.com"
-                type="email"
-              />
-            </label>
-            <label className="text-[12px] font-semibold text-slate-300">
-              Service required
-              <select
-                name="service"
-                required
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-[#071521] px-4 py-3 text-[14px] text-white outline-none transition focus:border-cyan-400"
-                defaultValue=""
-              >
-                <option value="" disabled>Select a service</option>
-                {services.map((service) => (
-                  <option key={service.title} value={service.title}>
-                    {service.title}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="text-[12px] font-semibold text-slate-300 md:col-span-2">
-              Message
-              <textarea
-                name="message"
-                required
-                className="mt-2 min-h-32 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] text-white outline-none transition focus:border-cyan-400"
-                placeholder="Tell us about your project, site location, and required work."
-              />
-            </label>
-          </div>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <button
-              name="intent"
-              value="whatsapp"
-              onPointerDown={setPressPoint}
-              className="animated-pill flex items-center gap-2 rounded-full bg-green-500 px-7 py-3.5 text-[14px] font-bold text-white hover:-translate-y-0.5 hover:opacity-85"
-              type="submit"
-            >
-              <MessageCircle className="h-4 w-4" />
-              Send to WhatsApp
-            </button>
-            <button
-              name="intent"
-              value="email"
-              onPointerDown={setPressPoint}
-              className="animated-pill flex items-center gap-2 rounded-full border border-white/20 px-7 py-3.5 text-[14px] font-bold text-white hover:-translate-y-0.5 hover:border-cyan-400 hover:text-cyan-400"
-              type="submit"
-            >
-              <Mail className="h-4 w-4" />
-              Send by Email
-            </button>
-          </div>
-        </form>
+
 
         <div className="mt-14 overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.04]">
           <iframe
@@ -962,7 +587,7 @@ export default function Home() {
 
       {/* ── FOOTER ── */}
       <footer className="border-t border-white/[0.08] bg-[#020913] px-[5%] py-12">
-        <div className="mx-auto grid max-w-7xl gap-9 text-center sm:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1fr_1fr_1fr] md:text-left">
+        <div className="mx-auto grid max-w-7xl gap-6 text-center sm:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1fr_1fr_1fr] md:text-left">
           <div>
             <p className="text-[18px] font-black text-white">ISFS Technical Services LLC</p>
             <p className="mt-2 text-[13px] leading-6 text-slate-500">

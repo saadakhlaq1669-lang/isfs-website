@@ -244,3 +244,19 @@ section[id]:target {
     animation-delay: 0s !important;
   }
 }
+
+/* Short collections keep every service and record in the page, with an explicit
+   expansion control instead of a long initial stack on small screens. */
+.collection--collapsed > :nth-child(n + 4) { display: none; }
+.collection { scroll-margin-top: 100px; }
+a, button, input, select, textarea, summary { -webkit-tap-highlight-color: transparent; }
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid #0891b2;
+  outline-offset: 4px;
+}
+@media (max-width: 767px) {
+  main section { overflow-wrap: anywhere; }
+  main h1 { font-size: clamp(2rem, 9vw, 3rem); }
+  main h2 { font-size: clamp(1.6rem, 7vw, 2.25rem); }
+  main section > div { min-width: 0; }
+}

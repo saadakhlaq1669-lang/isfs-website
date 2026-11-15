@@ -1,5 +1,5 @@
+import SiteHeader from "@/components/SiteHeader";
 import { pageMetadata } from "@/lib/seo";
-import Link from "next/link";
 import {
   Building2,
   CheckCircle2,
@@ -134,24 +134,14 @@ const process = [
 export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-[#060f1e] text-white">
-      <header className="site-header sticky top-0 z-50 flex h-[70px] items-center justify-between border-b border-white/[0.08] bg-[#060f1e]/90 px-[5%] backdrop-blur-xl">
-        <Link href="/" transitionTypes={["nav-back"]} className="animated-link text-[15px] font-black tracking-wide">
-          ISFS <span className="text-slate-400">Technical Services LLC</span>
-        </Link>
-        <nav className="flex items-center gap-4 text-[13px] font-semibold text-slate-300">
-          <Link href="/about" transitionTypes={["nav-back"]} className="animated-link hidden hover:text-cyan-400 sm:inline">About</Link>
-          <Link href="/contact" transitionTypes={["nav-forward"]} className="animated-pill rounded-full bg-cyan-400 px-5 py-2.5 font-bold text-[#060f1e] hover:opacity-85">
-            Contact
-          </Link>
-        </nav>
-      </header>
+      <SiteHeader />
 
-      <section className="px-[5%] py-24">
+      <section className="px-[5%] py-12 md:py-20">
         <div className="mx-auto max-w-7xl">
           <p className="text-[11px] font-bold uppercase tracking-[2px] text-cyan-400">Waterproofing services Dubai</p>
           <div className="mt-5 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
             <div>
-              <h1 className="text-5xl font-black leading-tight md:text-7xl">
+              <h1 className="text-4xl font-black leading-tight md:text-7xl">
                 Waterproofing, Roofing
                 <br />
                 and Protection Works
@@ -178,7 +168,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="bg-white px-[5%] py-24 text-slate-900">
+      <section className="bg-white px-[5%] py-12 md:py-20 text-slate-900">
         <div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => {
             const Icon = service.icon;
@@ -195,7 +185,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="px-[5%] py-24">
+      <section className="px-[5%] py-12 md:py-20">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-cyan-400">How we work</p>
