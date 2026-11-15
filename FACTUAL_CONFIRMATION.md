@@ -6,13 +6,13 @@ restoration for Preview, not verification of the figures.
 
 **Do not publish these claims to production until the owner confirms them:**
 
-- **500+ Projects Completed** beneath the homepage hero.
+- **100+ Projects Completed** beneath the homepage hero.
 - **100+ Delivered Works** above the project cards.
 
-No approved total or complete completion records have been supplied. The two
-figures may describe different scopes, but that distinction has not been
-established. Request confirmation of each number, its definition, and supporting
-records before production promotion. The 20+ experience / 18+ service statistics
+No approved total or complete completion records have been supplied. Both
+displayed totals now read 100+; their definitions and supporting records have not
+been established. Request confirmation of each number, its definition, and
+supporting records before production promotion. The 20+ experience / 18+ service statistics
 are restored as requested; their restoration is not independent verification.
 No other numerical sections or company history have been edited in this pass.
 

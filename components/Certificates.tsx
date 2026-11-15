@@ -1,9 +1,11 @@
+import CertificateAnchorScroll from "./CertificateAnchorScroll";
 import Image from "next/image";
 import { certificates } from "@/lib/certificates";
 import ExpandableGrid from "./ExpandableGrid";
 
 export default function Certificates({ arabic = false }: { arabic?: boolean }) {
   return <>
+    <CertificateAnchorScroll />
     <ExpandableGrid arabic={arabic} tone="light" label={arabic ? "عرض الشهادات الست" : "View all 6 certificate records"} className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {certificates.map(cert => <article key={cert.id} className="overflow-hidden rounded-3xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
         <a href={`/certificate${cert.id}.jpeg`} target="_blank" rel="noopener noreferrer" className="block" aria-label={`${arabic ? "فتح النسخة الأصلية" : "Open original scan"}: ${cert.issuer} — ${cert.title}`}>

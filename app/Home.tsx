@@ -355,7 +355,7 @@ export default function Home() {
           {[
             { num: "20+", label: "Years of Experience" },
             // Preview claim: requires owner factual confirmation before production.
-            { num: "500+", label: "Projects Completed" },
+            { num: "100+", label: "Projects Completed" },
             { num: "18+", label: "Core Services" },
             { num: "UAE", label: "Wide Coverage" },
           ].map((s, i) => (
@@ -525,7 +525,7 @@ export default function Home() {
       </section>
 
       {/* ── CERTIFICATIONS ── */}
-      <section id="certifications" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-24">
+      <section id="certifications" className="scroll-mt-0 border-b border-slate-200 bg-slate-50 px-[5%] py-24">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-700">
             <span>04</span>

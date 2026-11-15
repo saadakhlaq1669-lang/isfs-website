@@ -11,6 +11,7 @@ export default function ExpandableGrid({ children, label, arabic = false, classN
   const [toggled, setToggled] = useState(false);
   const [size, setSize] = useState<{ closed: number; open: number } | null>(null);
   const grid = useRef<HTMLDivElement>(null);
+  const initialized = useRef(false);
   const reduced = useReducedMotion();
   const id = useId();
   const margins = className.split(" ").filter(token => /^(?:\w+:)?mt-/.test(token)).join(" ");
@@ -25,6 +26,12 @@ export default function ExpandableGrid({ children, label, arabic = false, classN
       const last = cards[Math.min(2, cards.length - 1)];
       if (!last) return;
       const next = { closed: last.offsetTop + last.offsetHeight, open: element.offsetHeight };
+      // Next.js resolves hash navigation in layout effects. Clip synchronously
+      // before it can read the temporary full grid height during hydration.
+      if (!initialized.current && element.parentElement) {
+        element.parentElement.style.height = `${next.closed + 24}px`;
+        initialized.current = true;
+      }
       setSize(previous => previous?.closed === next.closed && previous?.open === next.open ? previous : next);
     };
     measure();

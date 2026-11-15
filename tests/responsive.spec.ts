@@ -168,7 +168,7 @@ test("requested original statistics and certificate captions", async ({ page }) 
     await hero.scrollIntoViewIfNeeded();
     const labels = ar ? ["سنوات الخبرة", "مشاريع مكتملة", "خدمات أساسية", "تغطية شاملة"] : ["Years of Experience", "Projects Completed", "Core Services", "Wide Coverage"];
     for (const label of labels) await expect(hero.getByText(label, { exact: true })).toBeVisible();
-    for (const value of ["20+", "500+", "18+", "UAE"]) await expect(hero.getByText(value, { exact: true })).toBeVisible();
+    for (const value of ["20+", "100+", "18+", "UAE"]) await expect(hero.getByText(value, { exact: true })).toBeVisible();
     const projectStats = page.locator("#projects .grid-cols-2");
     for (const value of ["100+", "20+", "UAE", "18+"]) await expect(projectStats.getByText(value, { exact: true })).toBeVisible();
     const certificates = page.locator("#certifications");
@@ -266,5 +266,50 @@ test("floating WhatsApp stays compact, viewport-fixed and usable in English and 
       expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("[data-floating-whatsapp]"), center)).toBe(false);
       await page.keyboard.press("Escape");
     }
+  }
+});
+
+test("all Certificates links reach the real section with sticky-header clearance", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  async function landed() {
+    await expect(page).toHaveURL(/#certifications$/);
+    const section = page.locator("#certifications");
+    await expect(section).toHaveCount(1);
+    await expect.poll(async () => Math.abs((await section.boundingBox())!.y - 90), { timeout: 8000 }).toBeLessThan(2);
+    // Catch a later hydration collapse or second router scroll after landing.
+    await page.waitForTimeout(350);
+    const top = (await section.boundingBox())!.y;
+    expect(top).toBeGreaterThanOrEqual(88);
+    expect(top).toBeLessThanOrEqual(92);
+    const heading = await section.locator("h2").boundingBox();
+    expect(heading!.y).toBeGreaterThan(70);
+    expect(heading!.y + heading!.height).toBeLessThan(page.viewportSize()!.height);
+    expect((await page.locator("iframe").first().boundingBox())!.y).toBeGreaterThan(page.viewportSize()!.height);
+  }
+  // Audit the shared header on every page, including its hidden mobile copy.
+  for (const path of ["/", "/ar", "/about", "/services", "/contact"]) {
+    await page.goto(path);
+    const links = page.locator('header a[href$="#certifications"]');
+    await expect(links.first()).toHaveAttribute("href", path === "/ar" ? "/ar#certifications" : "/#certifications");
+  }
+  // Cross-page header navigation reproduces the former Maps/hydration defect.
+  for (const path of ["/about", "/services", "/contact", "/ar"]) {
+    await page.goto(path);
+    if (page.viewportSize()!.width < 1024) await page.locator("header button").click();
+    await page.locator('header nav a[href$="#certifications"]').filter({ visible: true }).click();
+    await landed();
+  }
+  // Native section shortcuts in both languages, plus the About-page record link.
+  for (const path of ["/", "/ar"]) {
+    await page.goto(path);
+    await page.locator('main a[href="#certifications"]').first().click();
+    await landed();
+  }
+  await page.goto("/about");
+  await page.locator('[data-about-section] a[href="/#certifications"]').click();
+  await landed();
+  for (const path of ["/#certifications", "/ar#certifications"]) {
+    await page.goto(path);
+    await landed();
   }
 });
