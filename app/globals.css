@@ -274,3 +274,53 @@ section[id]:target {
 @media (prefers-reduced-motion: reduce) {
   .about-reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* Floating WhatsApp deliberately does not use .animated-pill: that rule sets
+   position:relative and overrides Tailwind's layered fixed-position utility. */
+.isfs-floating-whatsapp {
+  position: fixed;
+  inset: auto;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  gap: 9px;
+  box-sizing: border-box;
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
+  height: 56px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: #22c55e;
+  color: #fff;
+  font: 700 14px/1 Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: visible;
+  box-shadow: 0 6px 22px rgb(0 0 0 / 20%);
+  animation: isfs-whatsapp-enter 320ms ease-out;
+  transition: transform 180ms ease-out, background-color 180ms ease-out, box-shadow 180ms ease-out;
+}
+.isfs-floating-whatsapp svg { display: block; width: 25px; height: 25px; flex-shrink: 0; }
+.isfs-floating-whatsapp-label { display: none; }
+.isfs-floating-whatsapp:hover { background: #16a34a; transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 24px rgb(0 0 0 / 24%); }
+.isfs-floating-whatsapp:active { transform: scale(0.98); }
+.isfs-whatsapp-clearance { height: calc(48px + env(safe-area-inset-bottom, 0px)); background: #020913; }
+@media (min-width: 768px) {
+  .isfs-floating-whatsapp { width: auto; max-width: 180px; padding-inline: 17px; }
+  .isfs-floating-whatsapp-label { display: inline; }
+}
+@keyframes isfs-whatsapp-enter {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .isfs-floating-whatsapp { animation: none; transition: none; }
+  .isfs-floating-whatsapp:hover, .isfs-floating-whatsapp:active { transform: none; }
+}

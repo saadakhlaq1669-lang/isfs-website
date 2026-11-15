@@ -1,5 +1,6 @@
 "use client";
 
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import AboutSection from "@/components/AboutSection";
 import SiteHeader from "@/components/SiteHeader";
 import ExpandableGrid from "@/components/ExpandableGrid";
@@ -732,16 +733,7 @@ export default function Home() {
       </footer>
 
       {/* ── FLOATING WHATSAPP ── */}
-      <a
-        href={whatsAppQuoteUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        onPointerDown={setPressPoint}
-        className="animated-pill fixed bottom-7 right-7 z-50 flex items-center gap-2.5 rounded-full bg-green-500 px-5 py-3.5 text-[14px] font-bold text-white shadow-2xl shadow-green-500/30 hover:scale-105"
-      >
-        <MessageCircle className="h-5 w-5" />
-        WhatsApp
-      </a>
+      <FloatingWhatsApp href={whatsAppQuoteUrl} />
     </main>
   );
 }

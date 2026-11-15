@@ -216,3 +216,55 @@ test("About uses readable history and real photograph views, never the brochure"
     await expect(reveal).toHaveCSS("transform", "none");
   }
 });
+
+test("floating WhatsApp stays compact, viewport-fixed and usable in English and RTL", async ({ page }) => {
+  await page.context().route("https://wa.me/**", route => route.abort());
+  for (const path of ["/", "/ar"]) {
+    await page.goto(path);
+    const control = page.locator("[data-floating-whatsapp]");
+    await expect(control).toHaveCount(1);
+    await expect(control).toBeVisible();
+    await expect(control).toHaveCSS("position", "fixed");
+    await expect(control).not.toHaveClass(/animated-pill/);
+    const href = await control.getAttribute("href");
+    const url = new URL(href!);
+    expect(url.origin + url.pathname).toBe("https://wa.me/971506752786");
+    expect(url.searchParams.get("text")).toBe("Hello ISFS, I need a quotation for waterproofing works.");
+    await expect(control).toHaveAttribute("target", "_blank");
+    const initial = await control.boundingBox();
+    expect(initial!.height).toBe(56);
+    expect(initial!.width).toBeGreaterThanOrEqual(56);
+    expect(initial!.width).toBeLessThanOrEqual(180);
+    if (page.viewportSize()!.width < 768) expect(initial!.width).toBe(56);
+    expect(page.viewportSize()!.width - initial!.x - initial!.width).toBeCloseTo(16, 0);
+    expect(page.viewportSize()!.height - initial!.y - initial!.height).toBeCloseTo(20, 0);
+    const icon = await control.locator("svg").boundingBox();
+    expect(icon!.width).toBe(25);
+    expect(icon!.x).toBeGreaterThan(initial!.x);
+    expect(icon!.x + icon!.width).toBeLessThan(initial!.x + initial!.width);
+    for (const section of ["#about", "#projects", "#contact"]) {
+      await page.locator(section).scrollIntoViewIfNeeded();
+      await expect(control).toBeInViewport();
+      const scrolled = await control.boundingBox();
+      expect(scrolled!.x).toBeCloseTo(initial!.x, 0);
+      expect(scrolled!.y).toBeCloseTo(initial!.y, 0);
+    }
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    const copyright = await page.locator("footer > p").last().boundingBox();
+    expect(copyright!.y + copyright!.height).toBeLessThan(initial!.y);
+    const center = { x: initial!.x + initial!.width / 2, y: initial!.y + initial!.height / 2 };
+    expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("[data-floating-whatsapp]"), center)).toBe(true);
+    // Verify real click/popup wiring, but intercept the external request.
+    const popup = page.waitForEvent("popup");
+    await control.click();
+    const external = await popup;
+    await external.close();
+    if (page.viewportSize()!.width < 1024) {
+      await page.locator("header button").click();
+      const menu = page.getByRole("navigation", { name: path === "/ar" ? "قائمة الهاتف" : "Mobile navigation" });
+      await expect(menu).toBeVisible();
+      expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("[data-floating-whatsapp]"), center)).toBe(false);
+      await page.keyboard.press("Escape");
+    }
+  }
+});
