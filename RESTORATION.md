@@ -45,6 +45,8 @@ by the application and must not be committed.
   preserved source and compiled website archives.
 - Made the original Arabic page's English language link visible on mobile;
   it previously disappeared below the md breakpoint, preventing return navigation.
+- Removed two empty deployment-upload artifacts (next and isfs-website@0.1.0)
+  from the publishable project; unchanged originals remain in both local backups.
 - Removed trailing whitespace from the retained top-level about/page.tsx copy.
 - Kept original dependencies, package lock, content, assets, and visual styling.
   Additional top-level about/ and ar/ source copies remain preserved as recovered;
