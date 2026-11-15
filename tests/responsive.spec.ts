@@ -16,7 +16,6 @@ test("all pages render, fit viewport and retain crawlable content", async ({ pag
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     if (path === "/ar") await expect(page.locator("main")).toHaveAttribute("dir", "rtl");
     await expect(page.getByRole("link", { name: path === "/ar" ? "طلب عرض سعر" : "Request a Quotation", exact: true })).toBeVisible();
-    await expect(page.getByText(/500\+|100\+|\+500|\+100/)).toHaveCount(0);
     if (path === "/about") {
       await expect(page.getByText("Company-provided history", { exact: false })).toBeVisible();
       await mkdir("/workspace/isfs-ux-validation", { recursive: true });
@@ -85,7 +84,7 @@ test("collections expand, all certificate scans load and project scopes stay fac
       expect(await image.evaluate((element: HTMLImageElement) => element.naturalWidth)).toBeGreaterThan(0);
     }
     await expect(page.locator("#certifications")).toContainText("LEMS");
-    await expect(page.locator("#certifications")).toContainText(ar ? "2 يونيو 2025" : "02 Jun 2025");
+    await expect(page.locator("#certifications article")).not.toContainText([ar ? "2 يونيو 2025" : "02 Jun 2025"]);
     await expect(page.locator("#certifications")).toContainText("SOPREMA");
     await expect(page.locator("#certifications a").last()).toHaveAttribute("target", "_blank");
   }
@@ -159,4 +158,26 @@ test.describe("elegant collection motion", () => {
       expect(await viewport.evaluate(element => element.getBoundingClientRect().height)).toBeCloseTo(closed, 0);
     }
   });
+});
+
+test("requested original statistics and certificate captions", async ({ page }) => {
+  for (const path of ["/", "/ar"]) {
+    const ar = path === "/ar";
+    await page.goto(path);
+    const hero = page.locator("main > section.border-y");
+    await hero.scrollIntoViewIfNeeded();
+    const labels = ar ? ["سنوات الخبرة", "مشاريع مكتملة", "خدمات أساسية", "تغطية شاملة"] : ["Years of Experience", "Projects Completed", "Core Services", "Wide Coverage"];
+    for (const label of labels) await expect(hero.getByText(label, { exact: true })).toBeVisible();
+    for (const value of ["20+", "500+", "18+", "UAE"]) await expect(hero.getByText(value, { exact: true })).toBeVisible();
+    const projectStats = page.locator("#projects .grid-cols-2");
+    for (const value of ["100+", "20+", "UAE", "18+"]) await expect(projectStats.getByText(value, { exact: true })).toBeVisible();
+    const certificates = page.locator("#certifications");
+    await certificates.getByRole("button").click();
+    await expect(certificates.locator("article")).toHaveCount(6);
+    for (const card of await certificates.locator("article").all()) {
+      await expect(card).not.toContainText(/2023|2024|2025|2026|expiry|Issued|انتهاء|صدرت|نوفمبر|يونيو/);
+      await expect(card.locator("img")).toHaveAttribute("src", /certificate/);
+      await expect(card.getByRole("link").last()).toHaveAttribute("href", /certificate\d\.jpeg/);
+    }
+  }
 });

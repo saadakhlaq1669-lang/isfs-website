@@ -262,9 +262,10 @@ export default function ArabicPage() {
       <section className="border-y border-white/[0.08] bg-[#0a1929] px-[5%] py-10">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4">
           {[
-            { num: "2005", label: "التأسيس حسب تاريخ الشركة" },
-            { num: String(deliveredProjects.length), label: "مشاريع في الملف المعروض" },
-            { num: String(services.length), label: "خدمات مدرجة" },
+            { num: "20+", label: "سنوات الخبرة" },
+            // Preview claim: requires owner factual confirmation before production.
+            { num: "500+", label: "مشاريع مكتملة" },
+            { num: "18+", label: "خدمات أساسية" },
             { num: "UAE", label: "تغطية شاملة" },
           ].map((s, i) => (
             <Reveal key={s.label} className="text-center" delay={Math.min(i * 0.03, 0.09)}>
@@ -421,10 +422,11 @@ export default function ArabicPage() {
 
           <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
-              [String(deliveredProjects.length), "مشاريع في الملف المعروض"],
-              ["2005", "حسب تاريخ الشركة"],
+              // Preview claim: requires owner factual confirmation before production.
+              ["100+", "أعمال منجزة"],
+              ["20+", "سنوات الخبرة"],
               ["UAE", "تغطية المشاريع"],
-              [String(services.length), "خدمات مدرجة"],
+              ["18+", "خدمات أساسية"],
             ].map((item) => (
               <div key={item[1]} className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6 text-center">
                 <p className="text-3xl font-black text-cyan-400" dir="ltr">{item[0]}</p>

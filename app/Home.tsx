@@ -351,9 +351,10 @@ export default function Home() {
       <section className="border-y border-white/[0.08] bg-[#0a1929] px-[5%] py-10">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4">
           {[
-            { num: "2005", label: "Established (company history)" },
-            { num: String(deliveredProjects.length), label: "Projects in this portfolio" },
-            { num: String(services.length), label: "Services listed" },
+            { num: "20+", label: "Years of Experience" },
+            // Preview claim: requires owner factual confirmation before production.
+            { num: "500+", label: "Projects Completed" },
+            { num: "18+", label: "Core Services" },
             { num: "UAE", label: "Wide Coverage" },
           ].map((s, i) => (
             <StatItem key={s.label} num={s.num} label={s.label} index={i} />
@@ -528,10 +529,11 @@ export default function Home() {
 
           <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
-              [String(deliveredProjects.length), "Portfolio entries"],
-              ["2005", "Company history"],
+              // Preview claim: requires owner factual confirmation before production.
+              ["100+", "Delivered Works"],
+              ["20+", "Years of Experience"],
               ["UAE", "Project Coverage"],
-              [String(services.length), "Services listed"],
+              ["18+", "Core Services"],
             ].map((item) => (
               <div key={item[1]} className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6 text-center">
                 <p className="text-3xl font-black text-cyan-400">{item[0]}</p>

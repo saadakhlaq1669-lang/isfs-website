@@ -13,7 +13,6 @@ export default function Certificates({ arabic = false }: { arabic?: boolean }) {
           <p className="text-xs font-bold text-cyan-700" dir="ltr">{cert.issuer}</p>
           <h3 className="mt-2 text-base font-bold leading-6 text-slate-900">{arabic ? cert.ar : cert.title}</h3>
           <p className="mt-2 text-sm text-slate-600">{arabic ? cert.typeAr : cert.type}</p>
-          <p className="mt-3 text-xs leading-6 text-slate-600">{arabic ? cert.datesAr : cert.dates}</p>
           <a href={`/certificate${cert.id}.jpeg`} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center text-sm font-bold text-cyan-700">{arabic ? "فتح النسخة بالحجم الكامل ↗" : "View full-size scan ↗"}</a>
         </div>
       </article>)}
