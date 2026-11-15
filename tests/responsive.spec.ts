@@ -15,9 +15,9 @@ test("all pages render, fit viewport and retain crawlable content", async ({ pag
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://www.isfsuae.com${path === "/" ? "" : path}`);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     if (path === "/ar") await expect(page.locator("main")).toHaveAttribute("dir", "rtl");
-    await expect(page.getByRole("link", { name: path === "/ar" ? "طلب عرض سعر" : "Request a Quotation", exact: true })).toBeVisible();
+    await expect(page.locator("header").getByRole("link", { name: path === "/ar" ? "طلب عرض سعر" : "Request a Quotation", exact: true })).toBeVisible();
     if (path === "/about") {
-      await expect(page.getByText("Company-provided history", { exact: false })).toBeVisible();
+      await expect(page.locator("[data-about-section] time")).toHaveText(["2005", "2023"]);
       await mkdir("/workspace/isfs-ux-validation", { recursive: true });
       await page.screenshot({ path: `/workspace/isfs-ux-validation/${info.project.name}-about.png`, fullPage: true });
     }
@@ -52,7 +52,7 @@ test("mobile navigation closes on Escape and navigates in both languages", async
     await expect(page).toHaveURL(ar ? "/" : "/ar");
   }
   await page.goto("/contact");
-  await page.getByRole("link", { name: "Request a Quotation", exact: true }).click();
+  await page.locator("header").getByRole("link", { name: "Request a Quotation", exact: true }).click();
   await expect(page).toHaveURL("/contact#quote");
   await expect(page.locator(".quote-form")).toBeInViewport();
 });
@@ -179,5 +179,40 @@ test("requested original statistics and certificate captions", async ({ page }) 
       await expect(card.locator("img")).toHaveAttribute("src", /certificate/);
       await expect(card.getByRole("link").last()).toHaveAttribute("href", /certificate\d\.jpeg/);
     }
+  }
+});
+
+test("About uses readable history and real photograph views, never the brochure", async ({ page }) => {
+  for (const path of ["/", "/ar", "/about"]) {
+    await page.goto(path);
+    const about = page.locator("[data-about-section]");
+    await expect(about).toHaveCount(1);
+    await expect(about.locator("time")).toHaveText(["2005", "2023"]);
+    await expect(page.locator('img[src*="about-us"]')).toHaveCount(0);
+    await expect(about).not.toContainText(/Company-provided history|Portfolio entries|مشاريع في الملف المعروض|حسب تاريخ الشركة/);
+    await expect(about).toContainText("ISFS Technical Services LLC");
+    await expect(about).toContainText(path === "/ar" ? "الهدف للصيانة العامة" : "Al Hadaf General Maintenance LLC");
+    await expect(about).toContainText(path === "/ar" ? "ضبط الجودة" : "quality control");
+    await expect(about).toContainText(path === "/ar" ? "ما بعد الخدمة" : "after-service support");
+    const photos = about.locator("img");
+    await expect(photos).toHaveCount(3);
+    for (const photo of await photos.all()) {
+      await photo.scrollIntoViewIfNeeded();
+      await expect(photo).toHaveAttribute("src", /projects-collage/);
+      await expect(photo).toHaveJSProperty("complete", true);
+      expect(await photo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
+      const dimensions = await photo.evaluate(img => img.parentElement!.getBoundingClientRect().toJSON());
+      expect(dimensions.width).toBeCloseTo(dimensions.height, 0);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto(path);
+    const reveal = page.locator(".about-reveal").last();
+    await expect(reveal).toHaveAttribute("data-pending", "true");
+    await reveal.scrollIntoViewIfNeeded();
+    await expect(reveal).toHaveAttribute("data-pending", "false");
+    await expect(reveal).toHaveCSS("opacity", "1");
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expect(reveal).toHaveCSS("transform", "none");
   }
 });

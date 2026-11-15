@@ -1,5 +1,6 @@
 "use client";
 
+import AboutSection from "@/components/AboutSection";
 import SiteHeader from "@/components/SiteHeader";
 import ExpandableGrid from "@/components/ExpandableGrid";
 import Certificates from "@/components/Certificates";
@@ -384,57 +385,7 @@ export default function Home() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section id="about" className="scroll-mt-[90px] border-b border-slate-200 bg-white px-[5%] py-24">
-        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            viewport={{ once: true, amount: 0.12 }}
-          >
-            <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-700">
-              <span>01</span>
-              Who We Are
-            </p>
-            <h2 className="text-4xl font-black leading-tight text-slate-900 md:text-5xl">
-              A Dubai Team Built<br />on UAE Site Experience
-            </h2>
-            <p className="mt-6 text-[16px] leading-[1.85] text-slate-600">
-              ISFS Technical Services LLC delivers waterproofing, roofing, protective
-              coatings, and technical maintenance works across residential,
-              commercial, and industrial projects in Dubai and the UAE.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 px-5 py-4">
-                <p className="text-3xl font-black text-cyan-700">2005</p>
-                <p className="text-[12px] font-medium text-slate-500">Company-provided history</p>
-              </div>
-              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 px-5 py-4">
-                <p className="text-3xl font-black text-cyan-700">{deliveredProjects.length}</p>
-                <p className="text-[12px] font-medium text-slate-500">Portfolio entries</p>
-              </div>
-            </div>
-            <Link
-              href="/about"
-              transitionTypes={["nav-forward"]}
-              onPointerDown={setPressPoint}
-              className="animated-pill mt-8 inline-flex rounded-full bg-cyan-600 px-7 py-3.5 text-[14px] font-bold text-white hover:bg-cyan-700"
-            >
-              Learn More About ISFS
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.35 }}
-            viewport={{ once: true, amount: 0.12 }}
-            className="overflow-hidden rounded-[30px] border border-slate-200 shadow-2xl"
-          >
-            <Image src="/about-us.png" alt="ISFS Technical Services LLC company profile" width={1080} height={1456} className="w-full object-cover" sizes="(max-width: 1024px) 90vw, 45vw" />
-          </motion.div>
-        </div>
-      </section>
+      <AboutSection />
 
       {/* ── SERVICES ── */}
       <section id="services" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-24">

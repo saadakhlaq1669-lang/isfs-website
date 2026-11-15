@@ -1,10 +1,10 @@
+import AboutSection from "@/components/AboutSection";
 import SiteHeader from "@/components/SiteHeader";
 import ExpandableGrid from "@/components/ExpandableGrid";
 import Certificates from "@/components/Certificates";
 import QuoteForm from "@/components/QuoteForm";
 import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
-import Link from "next/link";
 import {
   Phone,
   ShieldCheck,
@@ -297,44 +297,7 @@ export default function ArabicPage() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section id="about" className="scroll-mt-[90px] border-b border-slate-200 bg-white px-[5%] py-24">
-        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2">
-          <Reveal>
-            <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-700">
-              <span dir="ltr">01</span>
-              من نحن
-            </p>
-            <h2 className="text-4xl font-black leading-tight text-slate-900 md:text-5xl">
-              فريق في دبي مبني<br />على خبرة مواقع الإمارات
-            </h2>
-            <p className="mt-6 text-[16px] leading-[1.85] text-slate-600">
-              تقدم ISFS Technical Services LLC أعمال العزل المائي والأسطح والطلاءات الواقية
-              والصيانة الفنية للمشاريع السكنية والتجارية والصناعية في دبي والإمارات.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 px-5 py-4">
-                <p className="text-3xl font-black text-cyan-700" dir="ltr">2005</p>
-                <p className="text-[12px] font-medium text-slate-500">حسب تاريخ الشركة</p>
-              </div>
-              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 px-5 py-4">
-                <p className="text-3xl font-black text-cyan-700" dir="ltr">{deliveredProjects.length}</p>
-                <p className="text-[12px] font-medium text-slate-500">مشاريع في الملف المعروض</p>
-              </div>
-            </div>
-            <Link
-              href="/about"
-              transitionTypes={["nav-forward"]}
-              className="animated-pill mt-8 inline-flex rounded-full bg-cyan-600 px-7 py-3.5 text-[14px] font-bold text-white hover:bg-cyan-700"
-            >
-              اقرأ المزيد عن ISFS
-            </Link>
-          </Reveal>
-
-          <Reveal className="overflow-hidden rounded-[30px] border border-slate-200 shadow-2xl" delay={0.05} scale>
-            <Image src="/about-us.png" alt="نبذة عن شركة ISFS للخدمات الفنية" width={1080} height={1456} className="w-full object-cover" sizes="(max-width: 1024px) 90vw, 45vw" />
-          </Reveal>
-        </div>
-      </section>
+      <AboutSection arabic />
 
       {/* ── SERVICES ── */}
       <section id="services" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-24">

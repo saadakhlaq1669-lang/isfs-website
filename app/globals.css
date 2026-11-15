@@ -265,3 +265,12 @@ section[id]:target {
 @media (max-width: 360px) {
   main h1 { font-size: 2.25rem; }
 }
+
+/* Scoped to the About content; surrounding sections are unchanged. */
+.about-reveal { transition: opacity 420ms ease-out, transform 420ms ease-out; }
+@media (prefers-reduced-motion: no-preference) {
+  .about-reveal[data-pending="true"] { opacity: 0; transform: translateY(12px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-reveal { opacity: 1; transform: none; transition: none; }
+}
