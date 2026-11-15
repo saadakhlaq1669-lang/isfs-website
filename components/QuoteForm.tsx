@@ -18,9 +18,9 @@ export default function QuoteForm({ arabic = false, serviceOptions }: { arabic?:
       setStatus(arabic ? "راجع الطلب واضغط إرسال في واتساب. لم يتم إرسال الطلب من الموقع." : "Review your request and press Send in WhatsApp. Nothing has been sent by this website.");
     }
   }
-  const input = "mt-2 min-h-12 w-full rounded-xl border border-white/20 bg-[#0a1929] px-4 py-3 text-base text-white outline-none focus:border-cyan-300";
-  return <form onSubmit={submit} className="quote-form rounded-3xl border border-white/15 bg-[#071521] p-5 text-start text-white sm:p-8" dir={arabic ? "rtl" : "ltr"}>
-    <h3 className="text-2xl font-bold">{arabic ? "أخبرنا عن مشروعك" : "Tell us about your project"}</h3>
+  const input = "mt-2 min-h-12 w-full rounded-2xl border border-white/10 bg-[#071521] px-4 py-3 text-[14px] text-white outline-none focus:border-cyan-300";
+  return <form onSubmit={submit} className="quote-form rounded-3xl border border-white/[0.08] bg-[#071521] p-6 text-start text-white md:p-8" dir={arabic ? "rtl" : "ltr"}>
+    <h3 className="text-center text-2xl font-black">{arabic ? "إرسال استفسار" : "Send an Inquiry"}</h3>
     <p className="mt-3 text-sm leading-6 text-slate-300">{arabic ? "أضف موقع المشروع ونوع العمل. يمكنك مشاركة الصور والمخططات في واتساب بعد فتح المحادثة." : "Include the site location and work required. You can share photographs and drawings in WhatsApp after opening the chat."}</p>
     <div className="mt-6 grid gap-4 sm:grid-cols-2">
       <label className="text-sm font-semibold">{arabic ? "الاسم *" : "Name *"}<input name="name" autoComplete="name" required maxLength={120} className={input} /></label>

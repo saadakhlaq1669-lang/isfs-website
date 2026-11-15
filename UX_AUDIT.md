@@ -1,3 +1,7 @@
+> Historical redesign audit for cd38ba2. Its visual changes have been superseded
+> by the original-design restoration; see DESIGN_RESTORATION.md. Certificate
+> transcriptions and evidence limitations below still apply.
+
 # Mobile and desktop review
 
 ## Scope and evidence

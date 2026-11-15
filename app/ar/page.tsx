@@ -1,9 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import ExpandableGrid from "@/components/ExpandableGrid";
-import ProjectPortfolio from "@/components/ProjectPortfolio";
 import Certificates from "@/components/Certificates";
 import QuoteForm from "@/components/QuoteForm";
-import PortfolioStats from "@/components/PortfolioStats";
 import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
@@ -145,8 +143,8 @@ const services = [
 const whyUs = [
   {
     icon: ShieldCheck,
-    title: "مستندات المصنعين",
-    desc: "نسخ شهادات التطبيق والتدريب لأنظمة العزل والحماية؛ اطلب المستندات الحالية لمشروعك.",
+    title: "وثائق تطبيق الأنظمة",
+    desc: "نسخ شهادات التطبيق والتدريب لأنظمة العزل المائي والحماية. اطلب المستندات الحالية لمشروعك.",
   },
   {
     icon: Building2,
@@ -165,6 +163,18 @@ const whyUs = [
   },
 ];
 
+const deliveredProjects = [
+  { name: "Twin Tower – Deira Islands", service: "العزل بالأغشية", location: "دبي" },
+  { name: "Prestige One Apartments – Deira Islands", service: "العزل بالأغشية", location: "دبي" },
+  { name: "Jumeirah Garden City – Al Satwa", service: "العزل بالأغشية", location: "دبي" },
+  { name: "Majid Al Futtaim – Deira City Centre", service: "أعمال العزل المائي", location: "دبي" },
+  { name: "CGGC China Energy", service: "العزل الكيميائي وخنادق الكابلات", location: "أم القيوين" },
+  { name: "Dubai Airport CMT Roof", service: "عزل الأسطح", location: "دبي" },
+  { name: "Strong Wall Construction", service: "عزل الأسطح المركب والمناطق الرطبة", location: "دبي" },
+  { name: "Hillite Building Contracting", service: "العزل بالأغشية ومعالجة الشقوق", location: "دبي" },
+  { name: "Al Fareej Al Sharqi", service: "تغليف خزانات المياه بالألياف الزجاجية", location: "الإمارات" },
+  { name: "Dubai Deira Islands", service: "أنظمة العزل المائي المتقدمة", location: "دبي" },
+];
 
 const whatsAppQuoteUrl =
   "https://wa.me/971506752786?text=Hello%20ISFS%2C%20I%20need%20a%20quotation%20for%20waterproofing%20works.";
@@ -185,7 +195,7 @@ export default function ArabicPage() {
       <SiteHeader arabic />
 
       {/* ── HERO ── */}
-      <section className="relative flex min-h-[calc(100svh-70px)] items-center overflow-hidden px-[5%] py-12 md:py-20">
+      <section className="relative flex min-h-[92vh] items-center overflow-hidden px-[5%] py-20">
         <div
           className="absolute inset-0"
           style={{
@@ -201,7 +211,7 @@ export default function ArabicPage() {
           <Reveal>
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-1.5 text-[12px] font-semibold text-cyan-300">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400" />
-              حسب تاريخ الشركة: البداية في 2005
+              الحماية الهندسية منذ عام 2005
             </div>
 
             <h1 className="text-5xl font-black leading-[1.2] tracking-tight md:text-6xl">
@@ -249,14 +259,28 @@ export default function ArabicPage() {
       </section>
 
       {/* ── STATS ── */}
-      <section className="border-y border-white/10 bg-[#0a1929] px-[5%] py-6"><div className="mx-auto max-w-7xl"><PortfolioStats arabic /></div></section>
+      <section className="border-y border-white/[0.08] bg-[#0a1929] px-[5%] py-10">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4">
+          {[
+            { num: "2005", label: "التأسيس حسب تاريخ الشركة" },
+            { num: String(deliveredProjects.length), label: "مشاريع في الملف المعروض" },
+            { num: String(services.length), label: "خدمات مدرجة" },
+            { num: "UAE", label: "تغطية شاملة" },
+          ].map((s, i) => (
+            <Reveal key={s.label} className="text-center" delay={Math.min(i * 0.03, 0.09)}>
+              <p className="text-4xl font-black text-cyan-400" dir="ltr">{s.num}</p>
+              <p className="mt-1 text-[12px] tracking-wide text-slate-400">{s.label}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
       <section className="border-b border-white/[0.08] bg-[#071521] px-[5%] py-5">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <p className="text-[11px] font-bold uppercase tracking-[2px] text-slate-400">
             أقسام الصفحة
           </p>
-          <nav className="flex flex-wrap gap-2">
+          <nav className="grid gap-2 sm:grid-cols-2 md:flex md:flex-wrap">
             {sectionLinks.map((item) => (
               <a
                 key={item.href}
@@ -272,21 +296,30 @@ export default function ArabicPage() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section id="about" className="scroll-mt-[90px] border-b border-slate-200 bg-white px-[5%] py-12 md:py-20">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 lg:gap-12 lg:grid-cols-2">
+      <section id="about" className="scroll-mt-[90px] border-b border-slate-200 bg-white px-[5%] py-24">
+        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2">
           <Reveal>
             <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-700">
               <span dir="ltr">01</span>
               من نحن
             </p>
-            <h2 className="text-3xl font-black leading-tight text-slate-900 md:text-5xl">
+            <h2 className="text-4xl font-black leading-tight text-slate-900 md:text-5xl">
               فريق في دبي مبني<br />على خبرة مواقع الإمارات
             </h2>
             <p className="mt-6 text-[16px] leading-[1.85] text-slate-600">
               تقدم ISFS Technical Services LLC أعمال العزل المائي والأسطح والطلاءات الواقية
               والصيانة الفنية للمشاريع السكنية والتجارية والصناعية في دبي والإمارات.
             </p>
-
+            <div className="mt-8 flex flex-wrap gap-4">
+              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 px-5 py-4">
+                <p className="text-3xl font-black text-cyan-700" dir="ltr">2005</p>
+                <p className="text-[12px] font-medium text-slate-500">حسب تاريخ الشركة</p>
+              </div>
+              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 px-5 py-4">
+                <p className="text-3xl font-black text-cyan-700" dir="ltr">{deliveredProjects.length}</p>
+                <p className="text-[12px] font-medium text-slate-500">مشاريع في الملف المعروض</p>
+              </div>
+            </div>
             <Link
               href="/about"
               transitionTypes={["nav-forward"]}
@@ -297,32 +330,32 @@ export default function ArabicPage() {
           </Reveal>
 
           <Reveal className="overflow-hidden rounded-[30px] border border-slate-200 shadow-2xl" delay={0.05} scale>
-            <Image src="/about-us.png" alt="نبذة عن شركة ISFS للخدمات الفنية" width={1080} height={1456} className="max-h-[420px] w-full object-contain" sizes="(max-width: 1024px) 90vw, 45vw" />
+            <Image src="/about-us.png" alt="نبذة عن شركة ISFS للخدمات الفنية" width={1080} height={1456} className="w-full object-cover" sizes="(max-width: 1024px) 90vw, 45vw" />
           </Reveal>
         </div>
       </section>
 
       {/* ── SERVICES ── */}
-      <section id="services" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-12 md:py-20">
+      <section id="services" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-24">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-700">
             <span dir="ltr">02</span>
             ما نقدمه
           </p>
-          <h2 className="text-3xl font-black leading-tight text-slate-900 md:text-5xl">
+          <h2 className="text-4xl font-black leading-tight text-slate-900 md:text-5xl">
             خدمات العزل المائي<br />والحماية
           </h2>
           <p className="mt-5 max-w-lg text-[16px] leading-[1.75] text-slate-500">
-            أنظمة للأسطح والأرضيات والمناطق الرطبة. ناقش الحل المناسب بعد مراجعة ظروف الموقع.
+            أنظمة رائدة في الصناعة لكل ركيزة وحالة، باستخدام مواد معتمدة من شركات مصنعة موثوقة.
           </p>
 
-          <ExpandableGrid arabic label={`عرض جميع الخدمات (${services.length})`} className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ExpandableGrid arabic tone="light" label="عرض جميع الخدمات" className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {services.map((svc, i) => {
               const Icon = svc.icon;
               return (
                 <Reveal
                   key={svc.title}
-                  className="rounded-3xl border border-slate-200 bg-white p-5 md:p-8 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300 hover:shadow-2xl hover:shadow-cyan-200/40"
+                  className="rounded-3xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300 hover:shadow-2xl hover:shadow-cyan-200/40"
                   delay={(i % 3) * 0.02}
                 >
                   <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50">
@@ -341,22 +374,22 @@ export default function ArabicPage() {
       </section>
 
       {/* ── WHY US ── */}
-      <section className="border-b border-white/[0.08] bg-[#060f1e] px-[5%] py-12 md:py-20">
+      <section className="border-b border-white/[0.08] bg-[#060f1e] px-[5%] py-24">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-300">
             <span dir="ltr">QA</span>
             الثقة والجودة
           </p>
-          <h2 className="text-3xl font-black leading-tight text-white md:text-5xl">
-            مستندات الأنظمة،<br />وتنسيق الموقع
+          <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">
+            أنظمة معتمدة،<br />وفحص في الموقع
           </h2>
-          <div className="mt-8 md:mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {whyUs.map((item, i) => {
               const Icon = item.icon;
               return (
                 <Reveal
                   key={item.title}
-                  className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6"
+                  className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-9"
                   delay={(i % 4) * 0.02}
                 >
                   <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10">
@@ -372,33 +405,80 @@ export default function ArabicPage() {
       </section>
 
       {/* ── PROJECTS ── */}
-      <section id="projects" className="scroll-mt-[90px] border-b border-white/[0.08] bg-[#0a1929] px-[5%] py-12 md:py-20">
+      <section id="projects" className="scroll-mt-[90px] border-b border-white/[0.08] bg-[#0a1929] px-[5%] py-24">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-300">
             <span dir="ltr">03</span>
             أعمالنا
           </p>
-          <h2 className="text-3xl font-black leading-tight md:text-5xl">مشاريع مختارة في الإمارات</h2>
-          <ProjectPortfolio arabic />
+          <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">
+            مشاريع العزل المائي<br />في جميع أنحاء الإمارات
+          </h2>
+          <p className="mt-5 max-w-3xl text-[16px] leading-[1.8] text-slate-400">
+            نفّذت ISFS أعمال العزل المائي والأسطح والأغشية وتغليف الألياف الزجاجية وحماية المناطق الرطبة
+            للفلل والأبراج والمراكز التجارية وحمامات السباحة وخزانات المياه والمشاريع التجارية في جميع أنحاء الإمارات.
+          </p>
+
+          <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+            {[
+              [String(deliveredProjects.length), "مشاريع في الملف المعروض"],
+              ["2005", "حسب تاريخ الشركة"],
+              ["UAE", "تغطية المشاريع"],
+              [String(services.length), "خدمات مدرجة"],
+            ].map((item) => (
+              <div key={item[1]} className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6 text-center">
+                <p className="text-3xl font-black text-cyan-400" dir="ltr">{item[0]}</p>
+                <p className="mt-2 text-[12px] text-slate-400">{item[1]}</p>
+              </div>
+            ))}
+          </div>
+
+          <ExpandableGrid arabic label="عرض جميع المشاريع" className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {deliveredProjects.map((project, i) => (
+              <Reveal
+                key={project.name}
+                className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400/40 hover:bg-white/[0.07]"
+                delay={(i % 3) * 0.02}
+              >
+                <p className="text-[17px] font-black text-white" dir="ltr">{project.name}</p>
+                <p className="mt-3 text-[13px] font-semibold text-cyan-400">{project.service}</p>
+                <p className="mt-2 flex items-center gap-1.5 text-[12px] text-slate-400">
+                  <MapPin className="h-3 w-3" /> {project.location}
+                </p>
+              </Reveal>
+            ))}
+          </ExpandableGrid>
+
+          <div className="mt-12 rounded-3xl border border-cyan-400/20 bg-cyan-400/10 p-6 text-center">
+            <p className="text-[15px] leading-7 text-slate-300">
+              محفظة المشاريع الكاملة متاحة عند الطلب — تشمل الفلل والمباني السكنية وخزانات المياه وحمامات السباحة
+              ومحطات الخدمة ومخيمات العمال والمشاريع التجارية في دبي والشارقة وعجمان ورأس الخيمة والفجيرة وأم القيوين.
+            </p>
+            <a href={whatsAppQuoteUrl} target="_blank" rel="noopener noreferrer" className="animated-link mt-4 inline-flex min-h-11 items-center text-[14px] font-bold text-cyan-300">طلب ملف المشاريع وعرض سعر</a>
+          </div>
         </div>
       </section>
 
       {/* ── CERTIFICATIONS ── */}
-      <section id="certifications" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-12 md:py-20">
+      <section id="certifications" className="scroll-mt-[90px] border-b border-slate-200 bg-slate-50 px-[5%] py-24">
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[2px] text-cyan-700">
             <span dir="ltr">04</span>
             الشهادات
           </p>
-          <h2 className="text-3xl font-black leading-tight text-slate-900 md:text-5xl">شهادات المصنعين والتدريب</h2>
+          <h2 className="text-4xl font-black leading-tight text-slate-900 md:text-5xl">شهادات المصنعين والتدريب</h2>
+          <p className="mt-5 max-w-lg text-[16px] leading-[1.75] text-slate-500">
+            نسخ شهادات المصنعين وإدارة الجودة والتدريب. التواريخ كما تظهر في النسخ؛ يرجى طلب المستندات الحالية للتأكد من الحالة.
+          </p>
+
           <Certificates arabic />
         </div>
       </section>
 
       {/* ── CONTACT ── */}
-      <section id="contact" className="scroll-mt-[90px] bg-[#060f1e] px-[5%] py-12 md:py-20">
+      <section id="contact" className="scroll-mt-[90px] bg-[#060f1e] px-[5%] py-24">
         <div className="mx-auto max-w-5xl">
-          <div className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-white/[0.04] px-4 py-10 md:px-14">
+          <div className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-white/[0.04] px-8 py-16 md:px-14">
             <div className="pointer-events-none absolute -top-24 left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
 
             <div className="relative z-10 text-center">
@@ -406,7 +486,7 @@ export default function ArabicPage() {
                 <span dir="ltr">05</span>
                 التواصل
               </p>
-              <h2 className="text-3xl font-black leading-tight text-white md:text-5xl">
+              <h2 className="text-4xl font-black leading-tight text-white md:text-5xl">
                 لنحمي
                 <br />
                 <span className="text-cyan-400">مشروعك معًا</span>
@@ -417,9 +497,7 @@ export default function ArabicPage() {
                 وأرضيات الإيبوكسي وأنظمة الحماية التقنية في دبي وجميع أنحاء الإمارات.
               </p>
 
-              <div id="quote" className="mt-8 scroll-mt-24"><QuoteForm arabic serviceOptions={services.map(service => service.title)} /></div>
-
-<div className="mt-12 grid gap-5 md:grid-cols-3">
+              <div className="mt-12 grid gap-5 md:grid-cols-3">
                 <div className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-6">
                   <Phone className="mx-auto h-8 w-8 text-cyan-400" />
                   <p className="mt-4 text-[13px] text-slate-400">جهة الاتصال الرئيسية</p>
@@ -457,7 +535,8 @@ export default function ArabicPage() {
                 </div>
               </div>
 
-              <details className="mt-8 rounded-3xl border border-cyan-400/10 bg-cyan-400/5 p-5"><summary className="cursor-pointer py-2 text-lg font-bold">خدمات تقنية إضافية</summary>
+              <div className="mt-14 rounded-3xl border border-cyan-400/10 bg-cyan-400/5 p-8">
+                <h3 className="text-2xl font-black text-white">خدمات تقنية إضافية</h3>
                 <div className="mt-6 grid gap-3 text-right sm:grid-cols-2 lg:grid-cols-3">
                   {[
                     "معالجة الخرسانة",
@@ -478,9 +557,9 @@ export default function ArabicPage() {
                     </div>
                   ))}
                 </div>
-              </details>
+              </div>
 
-
+              <div id="quote" className="mt-14 scroll-mt-[90px]"><QuoteForm arabic serviceOptions={services.map(service => service.title)} /></div>
 
               <div className="mt-14 overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.04]">
                 <iframe

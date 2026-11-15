@@ -44,11 +44,11 @@ export default function ContactPage() {
     <main className="min-h-screen bg-[#060f1e] text-white">
       <SiteHeader />
 
-      <section className="px-[5%] py-12 md:py-20">
-        <div className="mx-auto grid max-w-7xl gap-6 lg:gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <section className="px-[5%] py-24">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-cyan-400">Contact ISFS</p>
-            <h1 className="mt-5 text-4xl font-black leading-tight md:text-7xl">
+            <h1 className="mt-5 text-5xl font-black leading-tight md:text-7xl">
               Request a Waterproofing Quote
             </h1>
             <p className="mt-6 max-w-2xl text-[17px] leading-8 text-slate-400">
@@ -92,9 +92,9 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section id="quote" className="scroll-mt-24 px-[5%] pb-12"><div className="mx-auto max-w-3xl"><h2 className="sr-only">Quotation details</h2><QuoteForm /></div></section>
+      <section id="quote" className="scroll-mt-[90px] px-[5%] pb-24"><div className="mx-auto max-w-3xl"><h2 className="sr-only">Quotation details</h2><QuoteForm /></div></section>
 
-      <section className="bg-white px-[5%] py-12 md:py-20 text-slate-900">
+      <section className="bg-white px-[5%] py-24 text-slate-900">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <div>
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50">

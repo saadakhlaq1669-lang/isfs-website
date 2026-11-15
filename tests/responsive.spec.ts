@@ -15,10 +15,10 @@ test("all pages render, fit viewport and retain crawlable content", async ({ pag
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://www.isfsuae.com${path === "/" ? "" : path}`);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     if (path === "/ar") await expect(page.locator("main")).toHaveAttribute("dir", "rtl");
-    await expect(page.getByRole("link", { name: path === "/ar" ? "طلب عرض سعر" : "Get a quote", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: path === "/ar" ? "طلب عرض سعر" : "Request a Quotation", exact: true })).toBeVisible();
     await expect(page.getByText(/500\+|100\+|\+500|\+100/)).toHaveCount(0);
     if (path === "/about") {
-      await expect(page.getByText("The following history is company-provided information", { exact: false })).toBeVisible();
+      await expect(page.getByText("Company-provided history", { exact: false })).toBeVisible();
       await mkdir("/workspace/isfs-ux-validation", { recursive: true });
       await page.screenshot({ path: `/workspace/isfs-ux-validation/${info.project.name}-about.png`, fullPage: true });
     }
@@ -53,7 +53,7 @@ test("mobile navigation closes on Escape and navigates in both languages", async
     await expect(page).toHaveURL(ar ? "/" : "/ar");
   }
   await page.goto("/contact");
-  await page.getByRole("link", { name: "Get a quote", exact: true }).click();
+  await page.getByRole("link", { name: "Request a Quotation", exact: true }).click();
   await expect(page).toHaveURL("/contact#quote");
   await expect(page.locator(".quote-form")).toBeInViewport();
 });
@@ -64,15 +64,19 @@ test("collections expand, all certificate scans load and project scopes stay fac
     await page.goto(path);
     for (const section of ["services", "projects", "certifications"]) {
       const container = page.locator(`#${section}`);
-      expect(await container.locator(".collection > :visible").count()).toBe(3);
+      await expect(container.locator("[data-collection-item]:not([aria-hidden=true])")).toHaveCount(3);
       const button = container.getByRole("button");
       await button.click();
       await expect(button).toHaveAttribute("aria-expanded", "true");
-      expect(await container.locator(".collection > :visible").count()).toBeGreaterThan(3);
+      // These tests use reduced motion: extra card wrappers settle immediately.
+      const firstExtra = container.locator("[data-collection-item]").nth(3);
+      await expect(firstExtra).toHaveCSS("opacity", "1");
+      await expect(firstExtra).not.toHaveAttribute("inert", "");
+      expect(await container.locator("[data-collection-item]:not([aria-hidden=true])").count()).toBeGreaterThan(3);
     }
-    await expect(page.locator("#projects article")).toHaveCount(10);
-    await page.locator("#projects summary").first().click();
-    await expect(page.locator("#projects details[open] a")).toHaveAttribute("href", /wa\.me.*text=/);
+    await expect(page.locator("#projects [data-collection-item]")).toHaveCount(10);
+    await expect(page.locator("#projects")).toContainText("Twin Tower");
+    await expect(page.locator("#projects a").last()).toHaveAttribute("href", /wa\.me.*text=/);
     const scans = page.locator("#certifications img");
     await expect(scans).toHaveCount(6);
     for (const image of await scans.all()) {
@@ -111,4 +115,48 @@ test("quotation validates required fields and opens a localized draft without se
     await expect(form.getByRole("status")).toContainText(ar ? "لم يتم إرسال" : "Nothing has been sent");
     await expect(form.locator('[name="message"]')).toHaveValue("Do not send — local verification only");
   }
+});
+
+test.describe("elegant collection motion", () => {
+  test.use({ reducedMotion: "no-preference" });
+  test("expands and closes over time, with staggered extra cards", async ({ page }) => {
+    for (const path of ["/", "/ar"]) {
+      await page.goto(path);
+      const section = page.locator("#services");
+      const button = section.getByRole("button");
+      const viewport = section.locator(".collection-viewport");
+      await button.scrollIntoViewIfNeeded();
+      await expect(section.locator(".collection")).toHaveAttribute("data-measured", "true");
+      const closed = await viewport.evaluate(element => element.getBoundingClientRect().height);
+      async function recordClick() {
+        await button.evaluate(button => {
+          const host = button.closest(".expandable-collection")!;
+          const viewport = host.querySelector(".collection-viewport")!;
+          const cards = Array.from(host.querySelectorAll("[data-collection-item]"));
+          const state = { done: false, frames: [] as { height: number; first: number; last: number }[] };
+          (window as unknown as { motionRecording: typeof state }).motionRecording = state;
+          button.addEventListener("click", () => {
+            const start = performance.now();
+            function frame() {
+              state.frames.push({ height: viewport.getBoundingClientRect().height, first: Number(getComputedStyle(cards[3]).opacity), last: Number(getComputedStyle(cards.at(-1)!).opacity) });
+              if (performance.now() - start < 800) requestAnimationFrame(frame);
+              else state.done = true;
+            }
+            requestAnimationFrame(frame);
+          }, { once: true, capture: true });
+        });
+        await button.click();
+        await page.waitForFunction(() => (window as unknown as { motionRecording: { done: boolean } }).motionRecording.done);
+        return page.evaluate(() => (window as unknown as { motionRecording: { frames: { height: number; first: number; last: number }[] } }).motionRecording.frames);
+      }
+      const opening = await recordClick();
+      const opened = await viewport.evaluate(element => element.getBoundingClientRect().height);
+      expect(opened).toBeGreaterThan(closed + 100);
+      expect(opening.some(frame => frame.height > closed + 1 && frame.height < opened - 1)).toBe(true);
+      expect(opening.some(frame => frame.first > frame.last + 0.01)).toBe(true);
+      const closing = await recordClick();
+      expect(closing.some(frame => frame.height > closed + 1 && frame.height < opened - 1)).toBe(true);
+      expect(await viewport.evaluate(element => element.getBoundingClientRect().height)).toBeCloseTo(closed, 0);
+    }
+  });
 });

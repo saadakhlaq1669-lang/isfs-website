@@ -136,12 +136,12 @@ export default function ServicesPage() {
     <main className="min-h-screen bg-[#060f1e] text-white">
       <SiteHeader />
 
-      <section className="px-[5%] py-12 md:py-20">
+      <section className="px-[5%] py-24">
         <div className="mx-auto max-w-7xl">
           <p className="text-[11px] font-bold uppercase tracking-[2px] text-cyan-400">Waterproofing services Dubai</p>
           <div className="mt-5 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
             <div>
-              <h1 className="text-4xl font-black leading-tight md:text-7xl">
+              <h1 className="text-5xl font-black leading-tight md:text-7xl">
                 Waterproofing, Roofing
                 <br />
                 and Protection Works
@@ -168,7 +168,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="bg-white px-[5%] py-12 md:py-20 text-slate-900">
+      <section className="bg-white px-[5%] py-24 text-slate-900">
         <div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => {
             const Icon = service.icon;
@@ -185,7 +185,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="px-[5%] py-12 md:py-20">
+      <section className="px-[5%] py-24">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-cyan-400">How we work</p>
