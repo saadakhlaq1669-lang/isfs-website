@@ -25,9 +25,15 @@ This does not redirect the official domain, localhost, or other Preview hosts. I
 
 ## Release gate — not deployed
 
-Authenticated read-only Vercel project/domain API requests currently return HTTP 403: `Not authorized`, with re-authentication required for team scope `isfs-technical-services-llc-s-projects`. Current dashboard domain redirects/aliases could not be inspected. Public HTTP checks confirm no current www-to-Vercel redirect loop, but do not replace inspecting the project configuration.
+After the environment credential update, authenticated read-only project, domains, alias, and deployment API requests succeeded. Verified against the existing project `prj_nKQf93ujzn7gqFjbdqH1Ri8xSzZp`:
 
-Before release, restore read access for this project's team through the environment's Vercel HTTP secret (never paste credentials into chat). Inspect the existing domain configuration and confirm that www remains assigned to ISFS with no redirect back to the old host. Then obtain the user's release approval. No branch was pushed and no Preview or Production deployment was created by this audit.
+- Current Production deployment: `dpl_5QD9DMtE1sF5nQuLvFgP4m6zpPid`, READY, Git SHA `f344d2b1e085cda0d8bd024f88511f2b8626e68d` in both deployment source and commit metadata.
+- Both `www.isfsuae.com` and `isfs-website.vercel.app` aliases point to that deployment. Both are verified project domains with no configured domain redirect.
+- `isfsuae.com` is verified and redirects to `www.isfsuae.com`. Public HTTP checks confirm that this is currently a 307 preserving tested paths/query values. No change to that setting is included.
+- Production branch configuration remains `recovery/original-isfs-website`.
+- The redirect release's base is exactly the current live Git SHA. The release changes only `next.config.ts`, a redirect regression test, and this audit. No page, asset, dependency, or metadata changes are included. Unpublished development commit `ebd7360` is not an ancestor of this release.
+
+The configuration check found no redirect back to the old host and no loop conflicting with the proposed host-specific rule. Obtain the user's release approval before deploying. No branch was pushed and no Preview or Production deployment was created by this audit. Recheck the live deployment SHA immediately before an approved release; if production has changed, stop and rebase the isolated change onto the new live version rather than replacing it with this baseline.
 
 After approval, deploy this isolated change through the existing ISFS project without changing production branch configuration. Verify public old-domain requests return 308 to www with paths/query values retained, and that www pages, SEO routes, and icons still return 200. Confirm that Vercel actually assigned the new deployment to the old project alias too; public verification is required even if a deployment is READY.
 
